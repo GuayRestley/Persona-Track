@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PersonaTrack - Barangay Profiling System</title>
+    <style>
+        /* Basic CSS for styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+
+        header {
+            background-color: #007bff; /* Blue for a professional look */
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            background-color: #0056b3;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+        }
+
+        nav ul li a:hover {
+            background-color: #004085;
+            border-radius: 5px;
+        }
+
+        .hero {
+            background-image: url('hero-image.jpg'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 5rem 1rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Overlay for readability */
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .about, .features {
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .features ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .features li {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            background-color: #28a745; /* Green for call-to-action */
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>PersonaTrack</h1>
+        <p>Barangay Profiling System</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Welcome to PersonaTrack</h2>
+            <p>Efficiently manage resident profiles for your barangay with secure and easy-to-use tools.</p>
+            <button onclick="alert('Redirecting to login page...')">Get Started</button> <!-- Replace with actual link -->
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <h2>About PersonaTrack</h2>
+        <p>PersonaTrack is a digital profiling system designed specifically for barangay officials in the Philippines. It helps streamline resident data collection, updates, and analysis, making it easier to provide community services, track demographics, and ensure safety. Our platform prioritizes data privacy and security, complying with local regulations.</p>
+        <p>Whether you're handling census data, emergency responses, or community programs, PersonaTrack simplifies the process with intuitive features.</p>
+    </section>
+
+    <section id="features" class="features">
+        <h2>Key Features</h2>
+        <ul>
+            <li>
+                <h3>Secure Data Storage</h3>
+                <p>Encrypt and store resident profiles safely in the cloud, accessible only to authorized users.</p>
+            </li>
+            <li>
+                <h3>User-Friendly Interface</h3>
+                <p>Easy-to-navigate dashboards for adding, editing, and searching profiles on any device.</p>
+            </li>
+            <li>
+                <h3>Advanced Reporting</h3>
+                <p>Generate customizable reports on demographics, health stats, and more for better decision-making.</p>
+            </li>
+            <li>
+                <h3>Real-Time Updates</h3>
+                <p>Receive notifications for profile changes and integrate with barangay services for seamless operations.</p>
+            </li>
+        </ul>
+    </section>
+
+    <footer id="contact">
+        <p>&copy; 2023 PersonaTrack. All rights reserved.</p>
+        <p>Contact us: email@example.com | Phone: (123) 456-7890</p>
+        <p>Follow us on social media for updates.</p>
+    </footer>
+
+    <script>
+        // Simple script to handle navigation (optional)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
