@@ -1,35 +1,68 @@
 <?php
+include 'db_conn.php'; // your database connection file
 
+$message = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $profile_id = $_POST['profile_id'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $role_id = $_POST['role_id'];
+    $status = $_POST['status'];
+
+    // Hash password for security
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    // Prepare insert query
+    $sql = "INSERT INTO account (Profile_ID, Username, Password, Role_ID, Status)
+            VALUES (?, ?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("issis", $profile_id, $username, $hashed_password, $role_id, $status);
+
+    if ($stmt->execute()) {
+        $message = "✅ Account registered successfully!";
+    } else {
+        $message = "❌ Error: " . $stmt->error;
+    }
+
+    $stmt->close();
+    $conn->close();
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1024, initial-scale=1.0">
-    <title>Register Employee</title>
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" type="image/x-icon" href="assets/company_logo.png">
+    <title>Persona Track - Registration</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="main-page d-flex align-items-center justify-content-center" style="height: 89vh;">
-        <div class="registration-block">
-            <h6>Employee Registration</h6><br>
-                <form action="registration.php" method="post" class="registration-form">
-                    <div>
-                        <input type="text" name="fname" class="reg-input" required placeholder="First Name">
-                        <input type="text" name="lname" class="reg-input" required placeholder="Last Name">
-                        <input type="text" name="uname" class="reg-input" required placeholder="Username">
-                        <input type="text" name="contact" class="reg-input" required placeholder="Contact No.">
-                        <input type="password" name="password" class="reg-input" required placeholder="Password">
-                        <input type="password" name="cpassword" class="reg-input" style="margin-bottom: 1.5rem" required placeholder="Confirm Password">
-                        <div class="registration-buttons">
-                        <button name="register" class="btn btn-primary btm-sm">Register Account</button>
-                        <a href="manageAccounts.php"><button type="button" class="btn btn-primary btm-sm">Cancel</button></a>
-                    </div>
-                </form>
-        </div>
+    <div class="register-container">
+        <h2>Register New Account</h2>
+        <form method="POST" action="">
+            <label for="profile_id">Profile ID:</label>
+            <input type="number" name="profile_id" required>
+
+            <label for="username">Username:</label>
+            <input type="text" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+
+            <label for="role_id">Role ID:</label>
+            <input type="number" name="role_id" required>
+
+            <label for="status">Status:</label>
+            <select name="status" required>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+
+            <button type="submit">Register</button>
+        </form>
+        <p><?= $message ?></p>
     </div>
 </body>
 </html>
