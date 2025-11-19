@@ -1,0 +1,40 @@
+# Security headers
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "DENY"
+Header set X-XSS-Protection "1; mode=block"
+
+# Disable server signature
+ServerTokens Prod
+ServerSignature Off
+
+# Protect sensitive files
+<FilesMatch "\.(env|json|lock|md|yml|yaml)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect .htaccess file
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Enable rewrite engine
+RewriteEngine On
+
+# Redirect to HTTPS (uncomment if using SSL)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Prevent directory listing
+Options -Indexes
+
+# Set default charset
+AddDefaultCharset UTF-8
+
+# PHP settings (if PHP runs as Apache module)
+php_flag display_errors off
+php_flag log_errors on
+php_value error_log logs/php_errors.log
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
