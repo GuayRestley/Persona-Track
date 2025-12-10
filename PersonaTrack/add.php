@@ -1,43 +1,11 @@
 <?php
-require_once 'config.php';
-requireLogin();
+// homepage.php - Public Homepage
+session_start();
 
-$errors = [];
-$success = false;
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $full_name = sanitizeInput($_POST['full_name']);
-    $birthdate = sanitizeInput($_POST['birthdate']);
-    $sex = sanitizeInput($_POST['sex']);
-    $purok = sanitizeInput($_POST['purok']);
-    $contact_number = sanitizeInput($_POST['contact_number']);
-    $civil_status = sanitizeInput($_POST['civil_status']);
-    $occupation = sanitizeInput($_POST['occupation']);
-    
-    // Calculate age from birthdate
-    $birth = new DateTime($birthdate);
-    $today = new DateTime();
-    $age = $birth->diff($today)->y;
-    
-    // Validation
-    if (empty($full_name)) $errors[] = "Full name is required";
-    if (empty($birthdate)) $errors[] = "Birthdate is required";
-    if (empty($sex)) $errors[] = "Sex is required";
-    if (empty($purok)) $errors[] = "Purok is required";
-    if (empty($civil_status)) $errors[] = "Civil status is required";
-    
-    if (empty($errors)) {
-        $query = "INSERT INTO residents (full_name, age, sex, birthdate, purok, contact_number, civil_status, occupation) 
-                  VALUES ('$full_name', $age, '$sex', '$birthdate', '$purok', '$contact_number', '$civil_status', '$occupation')";
-        
-        if (mysqli_query($conn, $query)) {
-            $success = true;
-            header("Location: index.php?success=added");
-            exit();
-        } else {
-            $errors[] = "Database error: " . mysqli_error($conn);
-        }
-    }
+// Redirect logged-in users to dashboard
+if (isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -45,110 +13,305 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Resident - PersonaTrack</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <style>
-        body { background-color: #f8f9fa; }
-        .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-    </style>
+    <title>PersonaTrack - Barangay Profiling System</title>
+    <link rel="stylesheet" href="CSS/homepage.css">
+
 </head>
 <body>
-    <nav class="navbar navbar-dark mb-4">
-        <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1">
-                <i class="bi bi-people-fill"></i> PersonaTrack
-            </span>
-            <a href="index.php" class="btn btn-outline-light btn-sm">
-                <i class="bi bi-arrow-left"></i> Back to Dashboard
-            </a>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">🏘️</div>
+                <div>
+                    <div style="font-size: 1.5rem;">PersonaTrack</div>
+                    <div style="font-size: 0.8rem; opacity: 0.9;">Barangay Profiling System</div>
+                </div>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Services</a></li>
+                <li><a href="#benefits">Benefits</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+
+            <div style="display: flex; gap: 1rem;">
+                <a href="login.php" class="btn btn-outline">Login</a>
+
+                <!-- ❌ removed public sign-up
+                     ✔ replaced with a safe call-to-action -->
+                <a href="#contact" class="btn btn-primary">Contact Us</a>
+            </div>
+
+        </nav>
+    </header>
+
+    <!-- (YOUR HERO SECTION — unchanged) -->
+    <!-- (YOUR INFO BANNER — unchanged) -->
+    <!-- (YOUR ABOUT SECTION — unchanged) -->
+    <!-- (YOUR FEATURES SECTION — unchanged) -->
+    <!-- (YOUR BENEFITS SECTION — unchanged) -->
+    <!-- (YOUR HOW IT WORKS SECTION — unchanged) -->
+    <!-- (YOUR STATISTICS SECTION — unchanged) -->
+
+    <!-- Fix CTA section -->
+    <section class="cta-section">
+        <h2>Ready to Get Started?</h2>
+        <p>Barangay officials may request an official PersonaTrack account from your Barangay Administration Office.</p>
+        <div class="cta-buttons">
+            <!-- Removed "registration.php" because public registration is not allowed -->
+            <a href="login.php" class="btn btn-primary btn-large">Official Login</a>
+            <a href="#contact" class="btn btn-outline btn-large">Contact Barangay Office</a>
         </div>
-    </nav>
+    </section>
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0"><i class="bi bi-person-plus"></i> Add New Resident</h5>
-                    </div>
-                    <div class="card-body">
-                        <?php if (!empty($errors)): ?>
-                            <div class="alert alert-danger">
-                                <strong>Error:</strong>
-                                <ul class="mb-0">
-                                    <?php foreach ($errors as $error): ?>
-                                        <li><?php echo $error; ?></li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                        <?php endif; ?>
+    <!-- Footer (unchanged except removed unnecessary links) -->
+    <footer id="contact">
+        <div class="footer-content">
 
-                        <form method="POST" action="">
-                            <div class="row">
-                                <div class="col-md-12 mb-3">
-                                    <label for="full_name" class="form-label">Full Name *</label>
-                                    <input type="text" class="form-control" id="full_name" name="full_name" required value="<?php echo isset($_POST['full_name']) ? htmlspecialchars($_POST['full_name']) : ''; ?>">
-                                </div>
+            <div class="footer-section">
+                <h3>PersonaTrack</h3>
+                <p>Efficient, Secure, and Transparent Barangay Profiling System</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">Building stronger communities through technology.</p>
+            </div>
 
-                                <div class="col-md-6 mb-3">
-                                    <label for="birthdate" class="form-label">Birthdate *</label>
-                                    <input type="date" class="form-control" id="birthdate" name="birthdate" required value="<?php echo isset($_POST['birthdate']) ? $_POST['birthdate'] : ''; ?>">
-                                </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#features">Services</a></li>
+                    <li><a href="#benefits">Benefits</a></li>
+                    <li><a href="login.php">Login</a></li>
+                </ul>
+            </div>
 
-                                <div class="col-md-6 mb-3">
-                                    <label for="sex" class="form-label">Sex *</label>
-                                    <select class="form-select" id="sex" name="sex" required>
-                                        <option value="">Choose...</option>
-                                        <option value="Male" <?php echo (isset($_POST['sex']) && $_POST['sex'] === 'Male') ? 'selected' : ''; ?>>Male</option>
-                                        <option value="Female" <?php echo (isset($_POST['sex']) && $_POST['sex'] === 'Female') ? 'selected' : ''; ?>>Female</option>
-                                    </select>
-                                </div>
+            <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Welcome to PersonaTrack</h1>
+            <p class="subtitle">The Official Barangay Resident Profiling and Records System</p>
+            <p>Managing resident data securely, efficiently, and transparently for better community services.</p>
+            <div class="hero-buttons">
+                <a href="login.php" class="btn btn-primary btn-large">Get Started</a>
+                <a href="#features" class="btn btn-outline btn-large">Learn More</a>
+            </div>
+        </div>
+    </section>
 
-                                <div class="col-md-6 mb-3">
-                                    <label for="purok" class="form-label">Purok/Sitio *</label>
-                                    <input type="text" class="form-control" id="purok" name="purok" placeholder="e.g., Purok 1" required value="<?php echo isset($_POST['purok']) ? htmlspecialchars($_POST['purok']) : ''; ?>">
-                                </div>
+    <!-- Info Banner -->
+    <section class="info-banner">
+        <h2>🏘️ Empowering Barangay Communities Through Digital Innovation</h2>
+        <p>PersonaTrack streamlines resident management, improves service delivery, and promotes transparency in barangay operations. Join hundreds of barangays already using our system!</p>
+    </section>
 
-                                <div class="col-md-6 mb-3">
-                                    <label for="contact_number" class="form-label">Contact Number</label>
-                                    <input type="text" class="form-control" id="contact_number" name="contact_number" placeholder="09XXXXXXXXX" value="<?php echo isset($_POST['contact_number']) ? htmlspecialchars($_POST['contact_number']) : ''; ?>">
-                                </div>
+    <!-- About Section -->
+    <section class="about" id="about">
+        <h2>About PersonaTrack</h2>
+        <div class="about-content">
+            <p style="margin-bottom: 1.5rem;">
+                <strong>PersonaTrack</strong> is a comprehensive barangay profiling system designed to help local government units maintain accurate, organized, and accessible resident records.
+            </p>
+            <p style="margin-bottom: 1.5rem;">
+                Our system ensures fast, secure, and organized data management, enabling barangay officials to deliver better community services, generate accurate reports, and maintain transparency in all operations.
+            </p>
+            <p>
+                With PersonaTrack, we're building stronger, more connected communities through technology.
+            </p>
+        </div>
+    </section>
 
-                                <div class="col-md-6 mb-3">
-                                    <label for="civil_status" class="form-label">Civil Status *</label>
-                                    <select class="form-select" id="civil_status" name="civil_status" required>
-                                        <option value="">Choose...</option>
-                                        <option value="Single" <?php echo (isset($_POST['civil_status']) && $_POST['civil_status'] === 'Single') ? 'selected' : ''; ?>>Single</option>
-                                        <option value="Married" <?php echo (isset($_POST['civil_status']) && $_POST['civil_status'] === 'Married') ? 'selected' : ''; ?>>Married</option>
-                                        <option value="Widowed" <?php echo (isset($_POST['civil_status']) && $_POST['civil_status'] === 'Widowed') ? 'selected' : ''; ?>>Widowed</option>
-                                        <option value="Separated" <?php echo (isset($_POST['civil_status']) && $_POST['civil_status'] === 'Separated') ? 'selected' : ''; ?>>Separated</option>
-                                    </select>
-                                </div>
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2>Our Services</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📋</div>
+                <h3>Resident Records</h3>
+                <p>Comprehensive profiling of all barangay residents with complete demographic and contact information.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏠</div>
+                <h3>Household Management</h3>
+                <p>Organized household data by purok, street, and zone for efficient community mapping.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Reports & Analytics</h3>
+                <p>Generate population reports by age, gender, residency status, and other demographic factors.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Secure Access</h3>
+                <p>Role-based access control ensuring data privacy and security for all residents.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>Activity Logging</h3>
+                <p>Complete transparency with detailed activity logs of all system operations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📄</div>
+                <h3>Document Processing</h3>
+                <p>Streamlined processing of barangay clearances, certifications, and official documents.</p>
+            </div>
+        </div>
+    </section>
 
-                                <div class="col-md-6 mb-3">
-                                    <label for="occupation" class="form-label">Occupation</label>
-                                    <input type="text" class="form-control" id="occupation" name="occupation" placeholder="e.g., Farmer, Teacher" value="<?php echo isset($_POST['occupation']) ? htmlspecialchars($_POST['occupation']) : ''; ?>">
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <div class="d-flex justify-content-between">
-                                <a href="index.php" class="btn btn-secondary">
-                                    <i class="bi bi-x-circle"></i> Cancel
-                                </a>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-save"></i> Save Resident
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+    <!-- Benefits Section -->
+    <section class="benefits" id="benefits">
+        <h2>Why Choose PersonaTrack?</h2>
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <div class="benefit-icon">⚡</div>
+                <div class="benefit-content">
+                    <h3>Fast & Efficient</h3>
+                    <p>Reduce processing time for barangay documents from hours to minutes with automated workflows.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">🔐</div>
+                <div class="benefit-content">
+                    <h3>Secure & Private</h3>
+                    <p>Bank-level security with encrypted data storage and role-based access controls.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">📱</div>
+                <div class="benefit-content">
+                    <h3>Accessible Anywhere</h3>
+                    <p>Access the system from any device - desktop, tablet, or smartphone with internet connection.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">💰</div>
+                <div class="benefit-content">
+                    <h3>Cost-Effective</h3>
+                    <p>Eliminate paper-based systems and reduce operational costs with digital record-keeping.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">📈</div>
+                <div class="benefit-content">
+                    <h3>Data-Driven Insights</h3>
+                    <p>Make better decisions with real-time statistics and comprehensive population analytics.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon">✅</div>
+                <div class="benefit-content">
+                    <h3>Easy to Use</h3>
+                    <p>Intuitive interface designed for barangay officials with minimal training required.</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Register Account</h3>
+                <p>Barangay officials create secure accounts with role-based permissions.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Add Residents</h3>
+                <p>Input resident information including demographics, contact details, and address.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Manage Records</h3>
+                <p>Update, search, and organize resident data with powerful filtering tools.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3>Generate Reports</h3>
+                <p>Create comprehensive reports and analytics for better decision-making.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics -->
+    <section class="statistics">
+        <h2>Trusted by Communities</h2>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Barangays</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">100K+</div>
+                <div class="stat-label">Residents Profiled</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">99.9%</div>
+                <div class="stat-label">Uptime</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <h2>Ready to Get Started?</h2>
+        <p>Join PersonaTrack today and transform how your barangay manages resident information. Get started in minutes!</p>
+        <div class="cta-buttons">
+            <a href="registration.php" class="btn btn-primary btn-large">Create Account</a>
+            <a href="login.php" class="btn btn-outline btn-large">Sign In</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>PersonaTrack</h3>
+                <p>Efficient, Secure, and Transparent Barangay Profiling System</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">Building stronger communities through technology.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#features">Services</a></li>
+                    <li><a href="#benefits">Benefits</a></li>
+                    <li><a href="login.php">Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Information</h3>
+                <ul>
+                    <li>📍 Barangay Hall, San Juan</li>
+                    <li>📞 Contact: (074) XXX-XXXX</li>
+                    <li>✉️ Email: info@personatrack.ph</li>
+                    <li>🌐 Web: www.personatrack.ph</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#privacy">Data Privacy Notice</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                    <li><a href="#policy">Privacy Policy</a></li>
+                    <li><a href="#support">Support</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 PersonaTrack - Barangay Profiling System. All Rights Reserved.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Developed by: Ayeo-eo, Cedric | Guaym, Restley | Macaraeg, Jake Russell</p>
+        </div>
+    </footer>
+
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?php
-include 'db_conn.php'; // your database connection file
+include '/includes/db_conn.php'; // your database connection file
 
 $message = "";
 
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Persona Track - Registration</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/CSS/homepage.css">
 </head>
 <body>
     <div class="register-container">
